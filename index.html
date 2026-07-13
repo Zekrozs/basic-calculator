@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>calculator App</title>
+    <link rel="stylesheet" href="calc.css">
 </head>
 <body>
-   <main class="mian-wrapper">
+   <main class="main-wrapper">
     <article class="calculator">
         <section class="calc-screen">
-            <div class="screen">
-
-            </div>
+            <input type="text" readonly name="screen" class="screen" value="2">
 
         </section>
 
@@ -19,22 +18,22 @@
             <button type="button" class="button" data-number="number">7</button>
             <button type="button" class="button" data-number="number">8</button>
             <button type="button" class="button" data-number="number">9</button>
-            <button type="button" class="button" data-operator="division">÷</button>
+            <button type="button" class="button" id="operator" data-operator="division">÷</button>
 
             <button type="button" class="button" data-number="number">4</button>
             <button type="button" class="button" data-number="number">5</button>
             <button type="button" class="button" data-number="number">6</button>
-            <button type="button" class="button" data-operator="multipication">X</button>
+            <button type="button" class="button" id="operator" data-operator="multipication">X</button>
 
             <button type="button" class="button" data-number="number">1</button>
             <button type="button" class="button" data-number="number">2</button>
             <button type="button" class="button" data-number="number">3</button>
-            <button type="button" class="button" data-operator="substraction">-</button>
+            <button type="button" class="button" id="operator" data-operator="substraction">-</button>
 
             <button type="button" class="button" data-number="number">0</button>
             <button type="button" class="button" data-number="decimal">.</button>
-            <button type="button" class="button" data-operator="equal">=</button>
-            <button type="button" class="button" data-operator="addition">+</button>
+            <button type="button" class="button" id="operator" data-operator="equal">=</button>
+            <button type="button" class="button" id="operator" data-operator="addition">+</button>
 
             
         </section>
