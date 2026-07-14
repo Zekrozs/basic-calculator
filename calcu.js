@@ -3,19 +3,46 @@ let number = {
     rightSide: null
 }
 
-function add(leftSide, rightSide){
-    +leftSide + +rightSide
+number.leftSide = 5
+number.rightSide = 5
+
+let operation = {
+    add: function(leftSide, rightSide){
+        return +leftSide + +rightSide
+        },
+
+    substract: function(leftSide, rightSide){
+             return  +leftSide - +rightSide
+               },
+
+    divide: function(leftSide, rightSide){
+           return +leftSide / +rightSide
+           },
+    
+    multiply: function(leftSide, rightSide){
+              return +leftSide * +rightSide
+              }
 }
 
-function substract(leftSide, rightSide){
-    +leftSide - +rightSide
+
+function operate(type){
+    return operation[type](number.leftSide, number.rightSide)
 }
 
-function divide(leftSide, rightSide){
-    +leftSide / +rightSide
-}
 
-function multiply(leftSide, rightSide){
-    +leftSide * +rightSide
-}
+const wrapper = document.querySelector('.main-wrapper')
+
+wrapper.addEventListener('click', e =>{
+    const target = e.target
+
+    const operatorButton = target.closest('[data-operator]')
+
+    if (operatorButton){
+        const type = target.dataset.operator
+        result = operate(type)
+        console.log(result)
+
+
+    }
+})
 
