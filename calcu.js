@@ -1,10 +1,10 @@
 let number = {
-    leftSide: null,
-    rightSide: null
+    leftSide: [],
+    rightSide: []
 }
 
-number.leftSide = 5
-number.rightSide = 5
+// number.leftSide = 5
+// number.rightSide = 5
 
 let operation = {
     add: function(leftSide, rightSide){
@@ -29,6 +29,9 @@ function operate(type){
     return operation[type](number.leftSide, number.rightSide)
 }
 
+function getClickedNumbers(digit){
+    number['leftSide'].push(digit)
+}
 
 const wrapper = document.querySelector('.main-wrapper')
 
@@ -40,9 +43,14 @@ wrapper.addEventListener('click', e =>{
     if (operatorButton){
         const type = target.dataset.operator
         result = operate(type)
-        console.log(result)
+    }
 
+    const clickedNumber = target.closest('[data-number]')
 
+    if (clickedNumber){
+        const digit = target.dataset.number
+        getClickedNumbers(digit)
+        console.log(number.leftSide)
     }
 })
 
