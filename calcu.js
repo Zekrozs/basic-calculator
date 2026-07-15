@@ -1,10 +1,12 @@
 let number = {
-    leftSide: [],
-    rightSide: []
+    leftSide: '',
+    rightSide: ''
 }
 
-// number.leftSide = 5
-// number.rightSide = 5
+let DOM = {
+    allButtons: document.querySelector('.calc-buttons'),
+    wrapper: document.querySelector('.main-wrapper')
+}
 
 let operation = {
     add: function(leftSide, rightSide){
@@ -30,12 +32,20 @@ function operate(type){
 }
 
 function getClickedNumbers(digit){
-    number['leftSide'].push(digit)
+    const state = DOM['allButtons'].dataset.state
+    number[state] += digit
 }
 
-const wrapper = document.querySelector('.main-wrapper')
+function state(){
+    const state = DOM['allButtons'].dataset.state
 
-wrapper.addEventListener('click', e =>{
+    if(state == 'leftSide'){
+
+        DOM['allButtons'].dataset.state = 'rightSide'
+    }
+}
+
+DOM.wrapper.addEventListener('click', e =>{
     const target = e.target
 
     const operatorButton = target.closest('[data-operator]')
@@ -43,6 +53,7 @@ wrapper.addEventListener('click', e =>{
     if (operatorButton){
         const type = target.dataset.operator
         result = operate(type)
+        state()
     }
 
     const clickedNumber = target.closest('[data-number]')
@@ -50,7 +61,9 @@ wrapper.addEventListener('click', e =>{
     if (clickedNumber){
         const digit = target.dataset.number
         getClickedNumbers(digit)
-        console.log(number.leftSide)
+        console.log(number.leftSide, number.rightSide)
+
+
     }
 })
 
