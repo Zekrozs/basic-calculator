@@ -1,6 +1,7 @@
-let number = {
+let calculatorState = {
     leftSide: '',
-    rightSide: ''
+    rightSide: '',
+    currentOperator: null
 }
 
 let DOM = {
@@ -28,12 +29,12 @@ let operation = {
 
 
 function operate(type){
-    return operation[type](number.leftSide, number.rightSide)
+    return operation[type](calculatorState.leftSide, calculatorState.rightSide)
 }
 
 function getClickedNumbers(digit){
     const state = DOM['allButtons'].dataset.state
-    number[state] += digit
+    calculatorState[state] += digit
 }
 
 function state(){
@@ -45,15 +46,17 @@ function state(){
     }
 }
 
+  let type
+
 DOM.wrapper.addEventListener('click', e =>{
     const target = e.target
 
     const operatorButton = target.closest('[data-operator]')
+  
 
     if (operatorButton){
-        const type = target.dataset.operator
-        result = operate(type)
         state()
+       calculatorState.currentOperator = target.dataset.operator
     }
 
     const clickedNumber = target.closest('[data-number]')
@@ -61,9 +64,16 @@ DOM.wrapper.addEventListener('click', e =>{
     if (clickedNumber){
         const digit = target.dataset.number
         getClickedNumbers(digit)
-        console.log(number.leftSide, number.rightSide)
+        console.log(calculatorState.leftSide, calculatorState.rightSide)
 
 
+    }
+
+    const execute = target.closest('[data-execute]')
+
+    if(execute){
+        result = operate(calculatorState.currentOperator)
+        console.log(result)
     }
 })
 
