@@ -102,9 +102,9 @@ DOM.wrapper.addEventListener('click', e =>{
             // Clear the right side to make room for the next number in the chain
             clacState.rightNum = ''; 
         }
-        if(clacState.leftNum === '') return
-        
         state()
+
+        if(clacState.leftNum === '') return
        clacState.currentOperator = target.dataset.operator
        populateScreen()
     }
