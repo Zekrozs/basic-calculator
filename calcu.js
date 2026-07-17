@@ -7,7 +7,9 @@ let clacState = {
 
 let DOM = {
     allButtons: document.querySelector('.calc-buttons'),
-    wrapper: document.querySelector('.main-wrapper')
+    wrapper: document.querySelector('.main-wrapper'),
+    calcScreen: document.querySelector('input[type="text"]'),
+    displayedOperator: ''
 }
 
 let operation = {
@@ -43,11 +45,15 @@ function setStateForNextOperation(){
     clacState.currentOperator = null
 }
 
-function restState(){
+function resetState(){
     clacState.leftNum = ''
     clacState.rightNum = ''
     clacState.result = null
     clacState.currentOperator = null
+}
+
+function resetUi(){
+    DOM.calcScreen.value = ''
 }
 
 function state(){
@@ -62,6 +68,23 @@ function state(){
     
 }
 
+
+
+function populateScreen(){
+    let symbol = {
+        divide: '÷',
+        multiply: 'X',
+        substract: '-',
+        add: '+'
+    }
+
+    DOM.calcScreen.value = `${clacState.leftNum}${symbol[clacState.currentOperator] ?? ''}${clacState.rightNum}`
+}
+
+function displayResult(){
+    DOM.calcScreen.value = clacState.result
+}
+
 DOM.wrapper.addEventListener('click', e =>{
     const target = e.target
 
@@ -71,32 +94,44 @@ DOM.wrapper.addEventListener('click', e =>{
     if (operatorButton){
         state()
        clacState.currentOperator = target.dataset.operator
+       populateScreen()
     }
 
     const clickedNumber = target.closest('[data-number]')
 
     if (clickedNumber){
-        // in case no operator is inputted: clear state if a number is clicked after the last operation
-        if(clacState.result && clacState.currentOperator === null){
-            restState()
+        // clear state when immedietly clicking a number after the last operation
+        if(clacState.result !== null && clacState.currentOperator === null){
+            resetState()
         }
         const digit = target.dataset.number
+        const activeSide = DOM['allButtons'].dataset.state;
+        if (digit === '.' && clacState[activeSide].includes('.')) return;
         getClickedNumbers(digit)
+        populateScreen()
         console.log(clacState.leftNum, clacState.rightNum)
 
 
     }
 
-    // stop execution if any side is missing
-    if(clacState.leftNum === '' || clacState.rightNum === '' || clacState.currentOperator === null) return
+    const clearButton = target.closest('[data-reset]')
+    if(clearButton){
+        resetState()
+        resetUi()
+        
+    }
 
     const execute = target.closest('[data-execute]')
 
     if(execute){
+        // stop execution if any side is missing
+        if(clacState.leftNum === '' || clacState.rightNum === '' || clacState.currentOperator === null) return
+
         DOM['allButtons'].dataset.state = 'leftNum'
-        clacState.result = operate(clacState.currentOperator)
+        clacState.result = parseFloat(operate(clacState.currentOperator).toFixed(4))
         clacState.leftNum = clacState.result
         setStateForNextOperation()
+        displayResult()
         console.log(clacState.result)
         console.log(clacState.leftNum)
     }
