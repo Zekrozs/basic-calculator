@@ -1,6 +1,6 @@
-let calculatorState = {
-    leftSide: '',
-    rightSide: '',
+let clacState = {
+    leftNum: '',
+    rightNum: '',
     currentOperator: null
 }
 
@@ -10,43 +10,46 @@ let DOM = {
 }
 
 let operation = {
-    add: function(leftSide, rightSide){
-        return +leftSide + +rightSide
+    add: function(leftNum, rightNum){
+        return +leftNum + +rightNum
         },
 
-    substract: function(leftSide, rightSide){
-             return  +leftSide - +rightSide
+    substract: function(leftNum, rightNum){
+             return  +leftNum - +rightNum
                },
 
-    divide: function(leftSide, rightSide){
-           return +leftSide / +rightSide
+    divide: function(leftNum, rightNum){
+           return +leftNum / +rightNum
            },
     
-    multiply: function(leftSide, rightSide){
-              return +leftSide * +rightSide
+    multiply: function(leftNum, rightNum){
+              return +leftNum * +rightNum
               }
 }
 
 
 function operate(type){
-    return operation[type](calculatorState.leftSide, calculatorState.rightSide)
+    return operation[type](clacState.leftNum, clacState.rightNum)
 }
 
 function getClickedNumbers(digit){
-    const state = DOM['allButtons'].dataset.state
-    calculatorState[state] += digit
+    const side = DOM['allButtons'].dataset.state
+    clacState[side] += digit
+}
+
+function resetRightNum(){
+    clacState.rightNum = ''
 }
 
 function state(){
-    const state = DOM['allButtons'].dataset.state
+    const side = DOM['allButtons'].dataset.state
 
-    if(state == 'leftSide'){
+    if(side == 'leftNum'){
 
-        DOM['allButtons'].dataset.state = 'rightSide'
+        DOM['allButtons'].dataset.state = 'rightNum'
     }
+    
 }
-
-  let type
 
 DOM.wrapper.addEventListener('click', e =>{
     const target = e.target
@@ -56,7 +59,7 @@ DOM.wrapper.addEventListener('click', e =>{
 
     if (operatorButton){
         state()
-       calculatorState.currentOperator = target.dataset.operator
+       clacState.currentOperator = target.dataset.operator
     }
 
     const clickedNumber = target.closest('[data-number]')
@@ -64,7 +67,7 @@ DOM.wrapper.addEventListener('click', e =>{
     if (clickedNumber){
         const digit = target.dataset.number
         getClickedNumbers(digit)
-        console.log(calculatorState.leftSide, calculatorState.rightSide)
+        console.log(clacState.leftNum, clacState.rightNum)
 
 
     }
@@ -72,8 +75,11 @@ DOM.wrapper.addEventListener('click', e =>{
     const execute = target.closest('[data-execute]')
 
     if(execute){
-        result = operate(calculatorState.currentOperator)
+        result = operate(clacState.currentOperator)
+        clacState.leftNum = result
+        resetRightNum()
         console.log(result)
+        console.log(clacState.leftNum)
     }
 })
 
