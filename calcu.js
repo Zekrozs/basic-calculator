@@ -92,6 +92,18 @@ DOM.wrapper.addEventListener('click', e =>{
   
 
     if (operatorButton){
+        if (clacState.leftNum !== '' && clacState.rightNum !== '' && clacState.currentOperator !== null) {
+            // Calculate the intermediate result
+            clacState.result = operate(clacState.currentOperator);
+            
+            // Promote the result to be the new leftNum (converted to string so your decimal check still works)
+            clacState.leftNum = clacState.result.toString(); 
+            
+            // Clear the right side to make room for the next number in the chain
+            clacState.rightNum = ''; 
+        }
+        if(clacState.leftNum === '') return
+        
         state()
        clacState.currentOperator = target.dataset.operator
        populateScreen()
@@ -109,7 +121,6 @@ DOM.wrapper.addEventListener('click', e =>{
         if (digit === '.' && clacState[activeSide].includes('.')) return;
         getClickedNumbers(digit)
         populateScreen()
-        console.log(clacState.leftNum, clacState.rightNum)
 
 
     }
@@ -132,8 +143,6 @@ DOM.wrapper.addEventListener('click', e =>{
         clacState.leftNum = clacState.result
         setStateForNextOperation()
         displayResult()
-        console.log(clacState.result)
-        console.log(clacState.leftNum)
     }
 })
 
