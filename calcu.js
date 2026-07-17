@@ -1,7 +1,8 @@
 let clacState = {
     leftNum: '',
     rightNum: '',
-    currentOperator: null
+    currentOperator: null,
+    result: null
 }
 
 let DOM = {
@@ -37,12 +38,22 @@ function getClickedNumbers(digit){
     clacState[side] += digit
 }
 
-function resetRightNum(){
+function setStateForNextOperation(){
     clacState.rightNum = ''
+    clacState.currentOperator = null
+}
+
+function restState(){
+    clacState.leftNum = ''
+    clacState.rightNum = ''
+    clacState.result = null
+    clacState.currentOperator = null
 }
 
 function state(){
     const side = DOM['allButtons'].dataset.state
+
+    if(clacState.leftNum === '') return
 
     if(side == 'leftNum'){
 
@@ -65,6 +76,10 @@ DOM.wrapper.addEventListener('click', e =>{
     const clickedNumber = target.closest('[data-number]')
 
     if (clickedNumber){
+        // in case no operator is inputted: clear state if a number is clicked after the last operation
+        if(clacState.result && clacState.currentOperator === null){
+            restState()
+        }
         const digit = target.dataset.number
         getClickedNumbers(digit)
         console.log(clacState.leftNum, clacState.rightNum)
@@ -72,13 +87,17 @@ DOM.wrapper.addEventListener('click', e =>{
 
     }
 
+    // stop execution if any side is missing
+    if(clacState.leftNum === '' || clacState.rightNum === '' || clacState.currentOperator === null) return
+
     const execute = target.closest('[data-execute]')
 
     if(execute){
-        result = operate(clacState.currentOperator)
-        clacState.leftNum = result
-        resetRightNum()
-        console.log(result)
+        DOM['allButtons'].dataset.state = 'leftNum'
+        clacState.result = operate(clacState.currentOperator)
+        clacState.leftNum = clacState.result
+        setStateForNextOperation()
+        console.log(clacState.result)
         console.log(clacState.leftNum)
     }
 })
